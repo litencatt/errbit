@@ -97,7 +97,7 @@ class ErrorReport
     if app.notification_service.use_notify_of_exceed
       Notice.where(
         err_id: @notice.err_id,
-        created_at: app.notification_service.specific_period_minutes..Time.now
+        created_at: app.notification_service.specific_period_minutes.minutes.ago..Time.now
       ).count == app.notification_service.specific_error_count
     else
       app.notification_service.notify_at_notices.include?(0) ||
