@@ -14,6 +14,9 @@ class NotificationService
   field :subdomain, type: String
   field :sender_name, type: String
   field :notify_at_notices, type: Array, default: Errbit::Config.notify_at_notices
+  field :use_notify_of_exceed, type: Boolean, default: Errbit::Config.use_notify_of_exceed
+  field :specific_period_minutes, type: Integer, default: Errbit::Config.specific_period_minutes
+  field :specific_error_count, type: Integer, default: Errbit::Config.specific_error_count
   embedded_in :app, inverse_of: :notification_service
 
   validate :check_params
