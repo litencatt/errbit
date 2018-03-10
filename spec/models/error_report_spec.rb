@@ -341,6 +341,32 @@ describe ErrorReport do
     end
   end
 
+  describe "#should_notify?" do
+    context "with use_notify_of_exceed set" do
+      before do
+        error_report.app.use_notify_of_exceed = true
+        error_report.app.specific_period_minutes = 1
+        error_report.app.specific_error_count = 3
+      end
+
+      context "not notify on 2 times notice within 1 minutes" do
+        let!(:notice) { create_list(:notice, 2, created_at: Time.now) }
+
+        it "return false" do
+          expect(error_report.should_notify?).to be false
+        end
+      end
+
+      context "notify on 3 times notice within 1 minutes" do
+        let!(:notice) { create_list(:notice, 3, created_at: Time.now) }
+
+        it "return true" do
+          expect(error_report.should_notify?).to be true
+        end
+      end
+    end
+  end
+
   describe "#should_keep?" do
     context "with current app version not set" do
       before do
